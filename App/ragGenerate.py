@@ -11,5 +11,5 @@ class RagGenerate():
     def compair_vector(self, question: str):
         query = self.embed.embed_query(question)
         
-        return self.vector_store.collection_query(query)['documents']
+        return self.vector_store.collection_query(query)
     

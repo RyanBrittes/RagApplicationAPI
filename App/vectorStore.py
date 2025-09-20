@@ -27,17 +27,26 @@ class VectorStore:
         self.collection_verify_create()
 
         collection = self.client.get_collection(name="ragApplication")
-        ids = [f"id{i}" for i in range(len(self.documents.split_data()))]
         
         if collection.count() == 0:
-            collection.add(
-                embeddings=self.embedding.embed_text(),
-                documents=self.documents.split_data(),
-                ids=ids
-            )
-            print("Dados adicionados ao BD")
-        else:
+            documents = self.documents.split_data()
             
+            embeddings = self.embedding.embed_text()
+            
+            ids = [f"id{i}" for i in range(len(documents))]
+            
+            print(f"Documentos: {len(documents)}, Embeddings: {len(embeddings)}, IDs: {len(ids)}")
+            
+            if len(documents) == len(embeddings) == len(ids):
+                collection.add(
+                    embeddings=embeddings,
+                    documents=documents,
+                    ids=ids
+                )
+                print("Dados adicionados ao BD")
+            else:
+                raise ValueError(f"Tamanhos inconsistentes - Documentos: {len(documents)}, Embeddings: {len(embeddings)}, IDs: {len(ids)}")
+        else:
             print("Dados já existentes no BD")
     
     #Método que realiza a consulta na coleção do ChromaDB, trazendo os 3 resultados mais relevantes

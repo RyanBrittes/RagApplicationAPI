@@ -1,11 +1,12 @@
 from ragGenerate import RagGenerate
-from google import genai
+import google.generativeai as genai
 from dotenv import load_dotenv
 import os
 
 load_dotenv()
 
-client = genai.Client(api_key = os.getenv("GEMINI_API_KEY"))
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+model = genai.GenerativeModel('gemini-1.5-flash')
 
 #Loop criado para interagir de maneira contínua com a LLM
 while True:
@@ -14,23 +15,38 @@ while True:
     if looping != "sim":
         break
     else:
-        recovery = RagGenerate()
-        question = input("Digite sua pergunta: ")
-        persona = input("Digite a persona: ")
+        rag_question = input("Gostaria de utilizar RAG? Se sim, digite 'sim', se não digite qualquer coisa: ")
 
-        prompt = f"""Responda com base nos seguintes documentos:
-            {recovery.compair_vector(question)}
+        if rag_question == "sim":
+            recovery = RagGenerate()
+            question = "Fale sobre Crispr"        #input("Digite sua pergunta: ")
+            persona = "Fale de maneira direta"      #input("Digite a persona: ")
 
-            Pergunta: {question}
-            """
+            # Obter documentos relevantes do RAG
+            relevant_docs = recovery.compair_vector(question)
+            
+            # Extrair apenas o texto dos documentos
+            context_text = ""
+            if 'documents' in relevant_docs and relevant_docs['documents']:
+                for doc_list in relevant_docs['documents']:
+                    for doc in doc_list:
+                        context_text += f"{doc}\n\n"
 
-        response = client.models.generate_content(
-            model="gemini-2.5-flash",
-            contents=[
-                {"role": "system", "content": persona},
-                {"role": "user", "content": prompt}
-            ]
-        )
+            # Criar o prompt completo
+            full_prompt = f"""{persona}
+                Responda com base nos seguintes documentos:
+                {context_text}
+                Pergunta: {question}
+                """
 
-        print("***\n" + response['message']['content'] + "\n***")
+            try:
+                response = model.generate_content(full_prompt)
+                print("***\n" + response.text + "\n***")
+                
+            except Exception as e:
+                print(f"Erro ao gerar resposta: {e}")
         
+        else:
+            response = model.generate_content("Fale de maneira direta sobre Crispr")
+            print("***\n" + response.text + "\n***")
+            

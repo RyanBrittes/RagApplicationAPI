@@ -16,6 +16,18 @@ class ChunkGenerate():
             end = min(start + self.chunk_size, text_length)
             chunk = text[start:end]
             chunks.append(chunk)
+            
+            if end >= text_length:
+                break
+                
             start += self.chunk_size - self.overlap_size
+            
+            if self.overlap_size >= self.chunk_size:
+                start = end
         
         return chunks
+    
+
+#A = ChunkGenerate()
+
+#print(A.split_data())

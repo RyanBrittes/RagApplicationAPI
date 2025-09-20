@@ -15,7 +15,7 @@ while True:
     if looping != "sim":
         break
     else:
-        rag_question = input("Gostaria de utilizar RAG? Se sim, digite 'sim', se não digite qualquer coisa: ")
+        rag_question = input("Gostaria de utilizar RAG? Se sim, digite 'sim', se não digite qualquer coisa:\n")
 
         if rag_question == "sim":
             recovery = RagGenerate()

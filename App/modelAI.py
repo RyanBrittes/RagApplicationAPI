@@ -19,8 +19,8 @@ while True:
 
         if rag_question == "sim":
             recovery = RagGenerate()
-            question = "Fale sobre Crispr"        #input("Digite sua pergunta: ")
-            persona = "Fale de maneira direta"      #input("Digite a persona: ")
+            question = "Qual das estruturas a seguir é fundamental para a formação e recuperação da memória e está associada à imaginação de objetos mentais? a) Amígdala b) Hipocampo c) Córtex pré-frontal d) Corpo caloso"        #input("Digite sua pergunta: ")
+            persona = "Sua função é agir como tutor para alunos do curso de medicina que estão aprendendo sobre Neurociências. Agir de maneira empática, acessível, acolhedora e humana sempre respondendo com detalhes sobre o assunto para que os alunos consigam sanar suas dúvidas."      #input("Digite a persona: ")
 
             # Obter documentos relevantes do RAG
             relevant_docs = recovery.compair_vector(question)

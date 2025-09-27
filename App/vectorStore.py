@@ -57,6 +57,6 @@ class VectorStore:
 
          return collection.query(
             query_embeddings=query,
-            n_results=3
+            n_results=10
         )
     

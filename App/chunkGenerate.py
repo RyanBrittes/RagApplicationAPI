@@ -3,8 +3,8 @@ from extractorPDF import ExtractorPDF
 class ChunkGenerate():
     def __init__(self):
         self.extractor = ExtractorPDF()
-        self.chunk_size = 50
-        self.overlap_size = 10
+        self.chunk_size = 150
+        self.overlap_size = 30
 
     def split_data(self):
         text = self.extractor.extract_text()

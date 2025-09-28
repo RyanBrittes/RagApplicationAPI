@@ -27,7 +27,3 @@ class ChunkGenerate():
         
         return chunks
     
-
-#A = ChunkGenerate()
-
-#print(A.split_data())

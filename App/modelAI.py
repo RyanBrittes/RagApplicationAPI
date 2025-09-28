@@ -1,52 +1,51 @@
 from ragGenerate import RagGenerate
-import google.generativeai as genai
+from google import genai
 from dotenv import load_dotenv
 import os
 
 load_dotenv()
 
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-model = genai.GenerativeModel('gemini-1.5-flash')
+class Chat():
+    def __init__(self):
+        self.client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
+        self.persona = """Sua função é agir como um tutor para alunos do curso de medicina 
+        que estão aprendendo sobre Neurociências. Agir de maneira empática, acessível, 
+        acolhedora e humana sempre respondendo com detalhes sobre o assunto para que os 
+        alunos consigam tirar suas dúvidas com clareza"""
+        self.chat = self.client.chats.create(model="gemma-3-1b-it", config={"temperature": 0.6})
+        self.recovery = RagGenerate()
 
-#Loop criado para interagir de maneira contínua com a LLM
-while True:
-    looping = input("Se desejar fazer uma pergunta digite sim, porém se quiser sair digite qualquer coisa:\n")
+    def make_question(self):
+        loop_control = True
+        i = 0
 
-    if looping != "sim":
-        break
-    else:
-        rag_question = input("Gostaria de utilizar RAG? Se sim, digite 'sim', se não digite qualquer coisa:\n")
+        while loop_control:
+            print("\nUser: ")
+            question = input()
 
-        if rag_question == "sim":
-            recovery = RagGenerate()
-            question = "Qual das estruturas a seguir é fundamental para a formação e recuperação da memória e está associada à imaginação de objetos mentais? a) Amígdala b) Hipocampo c) Córtex pré-frontal d) Corpo caloso"        #input("Digite sua pergunta: ")
-            persona = "Sua função é agir como tutor para alunos do curso de medicina que estão aprendendo sobre Neurociências. Agir de maneira empática, acessível, acolhedora e humana sempre respondendo com detalhes sobre o assunto para que os alunos consigam sanar suas dúvidas."      #input("Digite a persona: ")
+            if question == "sair":
+                print("<-----SAINDO----->")
+                break
 
-            # Obter documentos relevantes do RAG
-            relevant_docs = recovery.compair_vector(question)
-            
-            # Extrair apenas o texto dos documentos
+            relevant_docs = self.recovery.compair_vector(question)
+
             context_text = ""
             if 'documents' in relevant_docs and relevant_docs['documents']:
                 for doc_list in relevant_docs['documents']:
                     for doc in doc_list:
                         context_text += f"{doc}\n\n"
 
-            # Criar o prompt completo
-            full_prompt = f"""{persona}
+            full_prompt = f"""{self.persona}
                 Responda com base nos seguintes documentos:
                 {context_text}
                 Pergunta: {question}
                 """
-
-            try:
-                response = model.generate_content(full_prompt)
-                print("***\n" + response.text + "\n***")
-                
-            except Exception as e:
-                print(f"Erro ao gerar resposta: {e}")
-        
-        else:
-            response = model.generate_content("Fale de maneira direta sobre Crispr")
-            print("***\n" + response.text + "\n***")
             
+            response = self.chat.send_message(full_prompt)
+
+            print(f"\nTutor: {response.text}")
+            i += 2
+
+A = Chat()
+
+A.make_question()

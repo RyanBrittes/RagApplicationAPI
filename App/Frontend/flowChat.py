@@ -1,13 +1,13 @@
 from Backend.ragGenerate import RagGenerate
-from menu import Menu
-from personas import Personas
+from Frontend.menu import Menu
+from Frontend.personas import Personas
 from google import genai
 from dotenv import load_dotenv
 import os
 
 load_dotenv()
 
-class Chat():
+class FlowChat():
     def __init__(self):
         self.client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
         self.chat = self.client.chats.create(model="gemma-3-1b-it", config={"temperature": 0.6})
@@ -83,7 +83,7 @@ class Chat():
             i += 2
 
     def make_specific_questions(self):
-        persona = self.personas.get_personas("01")
+        persona = self.personas.get_personas("03")
 
         i = 0
 

@@ -1,9 +1,9 @@
-from chat import Chat
+from flowChat import FlowChat
 
 class Menu():
 
     def __init__(self):
-        self.chat = Chat()
+        self.chat = FlowChat()
 
     def get_menu(self):
         while True:
@@ -28,4 +28,4 @@ class Menu():
                     break
                 
                 case _:
-                    print("\Opção não encontrada, tente novamente")
+                    print("\nOpção não encontrada, tente novamente")

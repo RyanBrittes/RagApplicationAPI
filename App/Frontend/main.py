@@ -1,4 +1,4 @@
-from Frontend.menu import Menu
+from menu import Menu
 
 start_menu = Menu()
 

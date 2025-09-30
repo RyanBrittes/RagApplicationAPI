@@ -26,13 +26,16 @@ class FlowChat():
                         \n04 - Sair\n""")
             match opt:
                 case "01":
-                    self.talk_with_tutor()
+                    self.talk_with_tutor("1")
+                    break
 
                 case "02":
-                    self.make_exercises()
+                    self.talk_with_tutor("2")
+                    break
 
                 case "03":
-                    self.make_specific_questions()
+                    self.talk_with_tutor("3")
+                    break
 
                 case "04":
                     print("\nAté breve!!")
@@ -40,86 +43,30 @@ class FlowChat():
                 
                 case _:
                     print("\nOpção não encontrada, tente novamente")
+                    break
+            break
 
-    def talk_with_tutor(self):
-        persona = self.personas.get_personas("01")
+    def talk_with_tutor(self, opt):
 
+        if opt == "1":
+            persona = self.personas.get_personas("01")
+            print("\n*****Hora de falar com o tutor, diga quais são suas dúvidas aqui e se quiser sair é digitar ""sair"" a qualquer momento*****")
+        
+        if opt == "2":
+            persona = self.personas.get_personas("02")
+            print("\n*****Hora de praticar com o tutor, descreva que tipo de exercícios quer exercitar e se quiser sair é digitar ""sair"" a qualquer momento*****")
+        
+        if opt == "3":
+            persona = self.personas.get_personas("03")
+            print("\n*****Hora de falar com o tutor sobre temas específicos, diga quais são suas dúvidas aqui e se quiser sair é digitar ""sair"" a qualquer momento*****")
         i = 0
-
-        print("\n*****Hora de falar com o tutor, diga quais são suas dúvidas aqui e se quiser sair é digitar ""sair"" a qualquer momento*****")
-
+        
         while True:
             print("\nUser: ")
             question = input()
 
             if question == "sair":
                 print("<-----SAINDO----->")
-                self.get_menu()
-
-            relevant_docs = self.recovery.compair_vector(question)
-
-            context_text = ""
-            if 'documents' in relevant_docs and relevant_docs['documents']:
-                for doc_list in relevant_docs['documents']:
-                    for doc in doc_list:
-                        context_text += f"{doc}\n\n"
-
-            full_prompt = f"""{persona}
-                Responda com base nos seguintes documentos:
-                {context_text}
-                Pergunta: {question}
-                """
-            
-            response = self.chat.send_message(full_prompt)
-
-            print(f"\nTutor: {response.text}")
-            i += 2
-    
-    def make_exercises(self):
-        persona = self.personas.get_personas("02")
-
-        i = 0
-
-        print("\n*****Hora de praticar com o tutor, descreva que tipo de exercícios quer exercitar e se quiser sair é digitar ""sair"" a qualquer momento*****")
-
-        while True:
-            print("\nUser: ")
-            question = input()
-
-            if question == "sair":
-                self.get_menu()
-
-            relevant_docs = self.recovery.compair_vector(question)
-
-            context_text = ""
-            if 'documents' in relevant_docs and relevant_docs['documents']:
-                for doc_list in relevant_docs['documents']:
-                    for doc in doc_list:
-                        context_text += f"{doc}\n\n"
-
-            full_prompt = f"""{persona}
-                Responda com base nos seguintes documentos:
-                {context_text}
-                Pergunta: {question}
-                """
-            
-            response = self.chat.send_message(full_prompt)
-
-            print(f"\nTutor: {response.text}")
-            i += 2
-
-    def make_specific_questions(self):
-        persona = self.personas.get_personas("03")
-
-        i = 0
-
-        print("\n*****Hora de falar com o tutor sobre temas específicos, diga quais são suas dúvidas aqui e se quiser sair é digitar ""sair"" a qualquer momento*****")
-
-        while True:
-            print("\nUser: ")
-            question = input()
-
-            if question == "sair":
                 self.get_menu()
 
             relevant_docs = self.recovery.compair_vector(question)

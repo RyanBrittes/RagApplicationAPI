@@ -1,5 +1,5 @@
-from menu import Menu
+from flowChat import FlowChat
 
-start_menu = Menu()
+start_menu = FlowChat()
 
 start_menu.get_menu()

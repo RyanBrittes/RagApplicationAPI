@@ -1,9 +1,11 @@
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from Backend.ragGenerate import RagGenerate
-from Frontend.menu import Menu
-from Frontend.personas import Personas
+from personas import Personas
 from google import genai
 from dotenv import load_dotenv
-import os
 
 load_dotenv()
 
@@ -12,8 +14,32 @@ class FlowChat():
         self.client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
         self.chat = self.client.chats.create(model="gemma-3-1b-it", config={"temperature": 0.6})
         self.recovery = RagGenerate()
-        self.menu = Menu()
         self.personas = Personas()
+
+    def get_menu(self):
+        while True:
+            print("\n*****Seja bem vindo!!*****")
+            print("\nEscolha uma das seguintes opções para continuar: ")
+            opt = input("""\n01 - Iniciar uma conversa com o tutor
+                        \n02 - Solicitar a criação de uma lista de exercícios
+                        \n03 - Tirar dúvidas sobre um tema específico
+                        \n04 - Sair\n""")
+            match opt:
+                case "01":
+                    self.talk_with_tutor()
+
+                case "02":
+                    self.make_exercises()
+
+                case "03":
+                    self.make_specific_questions()
+
+                case "04":
+                    print("\nAté breve!!")
+                    break
+                
+                case _:
+                    print("\nOpção não encontrada, tente novamente")
 
     def talk_with_tutor(self):
         persona = self.personas.get_personas("01")
@@ -28,7 +54,7 @@ class FlowChat():
 
             if question == "sair":
                 print("<-----SAINDO----->")
-                self.menu.get_menu()
+                self.get_menu()
 
             relevant_docs = self.recovery.compair_vector(question)
 
@@ -61,7 +87,7 @@ class FlowChat():
             question = input()
 
             if question == "sair":
-                self.menu.get_menu()
+                self.get_menu()
 
             relevant_docs = self.recovery.compair_vector(question)
 
@@ -94,7 +120,7 @@ class FlowChat():
             question = input()
 
             if question == "sair":
-                self.menu.get_menu()
+                self.get_menu()
 
             relevant_docs = self.recovery.compair_vector(question)
 

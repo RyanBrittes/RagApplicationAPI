@@ -3,7 +3,7 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from Backend.ragGenerate import RagGenerate
-from personas import Personas
+from Frontend.instructions import Instructions
 from google import genai
 from dotenv import load_dotenv
 
@@ -14,7 +14,7 @@ class FlowChat():
         self.client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
         self.chat = self.client.chats.create(model="gemma-3-1b-it", config={"temperature": 0.6})
         self.recovery = RagGenerate()
-        self.personas = Personas()
+        self.instructions = Instructions()
 
     def get_menu(self):
         while True:
@@ -43,31 +43,30 @@ class FlowChat():
                 
                 case _:
                     print("\nOpção não encontrada, tente novamente")
-                    break
-            break
 
     def talk_with_tutor(self, opt):
+        persona = self.instructions.get_instructions("04")
 
         if opt == "1":
-            persona = self.personas.get_personas("01")
+            instruction = self.instructions.get_instructions("01")
             print("\n*****Hora de falar com o tutor, diga quais são suas dúvidas aqui e se quiser sair é digitar ""sair"" a qualquer momento*****")
         
         if opt == "2":
-            persona = self.personas.get_personas("02")
+            instruction = self.instructions.get_instructions("02")
             print("\n*****Hora de praticar com o tutor, descreva que tipo de exercícios quer exercitar e se quiser sair é digitar ""sair"" a qualquer momento*****")
         
         if opt == "3":
-            persona = self.personas.get_personas("03")
+            instruction = self.instructions.get_instructions("03")
             print("\n*****Hora de falar com o tutor sobre temas específicos, diga quais são suas dúvidas aqui e se quiser sair é digitar ""sair"" a qualquer momento*****")
         i = 0
         
         while True:
-            print("\nUser: ")
+            print("\n[User]: ")
             question = input()
 
             if question == "sair":
-                print("<-----SAINDO----->")
                 self.get_menu()
+                break
 
             relevant_docs = self.recovery.compair_vector(question)
 
@@ -78,12 +77,15 @@ class FlowChat():
                         context_text += f"{doc}\n\n"
 
             full_prompt = f"""{persona}
+                {instruction}
                 Responda com base nos seguintes documentos:
                 {context_text}
                 Pergunta: {question}
                 """
             
+            #print(f"\nContexto Extraido: {context_text}")
+            
             response = self.chat.send_message(full_prompt)
 
-            print(f"\nTutor: {response.text}")
+            print(f"\n[Tutor]:\n{response.text}")
             i += 2

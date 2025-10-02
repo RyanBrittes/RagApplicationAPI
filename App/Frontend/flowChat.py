@@ -12,7 +12,7 @@ load_dotenv()
 class FlowChat():
     def __init__(self):
         self.client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
-        self.chat = self.client.chats.create(model="gemma-3-1b-it", config={"temperature": 0.6})
+        self.chat = self.client.chats.create(model="gemma-3-1b-it", config={"temperature": 0.2})
         self.recovery = RagGenerate()
         self.instructions = Instructions()
 

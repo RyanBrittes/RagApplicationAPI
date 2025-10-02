@@ -5,6 +5,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from Backend.ragGenerate import RagGenerate
 from Frontend.instructions import Instructions
 from google import genai
+from google.genai import types
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -12,7 +13,10 @@ load_dotenv()
 class FlowChat():
     def __init__(self):
         self.client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
-        self.chat = self.client.chats.create(model="gemma-3-1b-it", config={"temperature": 0.2})
+        self.client.chats.create
+        self.chat = self.client.chats.create(model="gemma-3-27b-it", 
+                                             config= types.GenerateContentConfig(
+                                                 temperature=0.1))
         self.recovery = RagGenerate()
         self.instructions = Instructions()
 

@@ -3,9 +3,8 @@ import fitz
 #Parte do processo responsável por extrair o texto do PDF
 class Test():
     def __init__(self):
-        self.pdf_path = "files/Texto_Completo_Extraido.pdf"
+        self.pdf_path = "files/Texto_Exemplo-1.pdf"
         self.pdf_file = fitz.open(self.pdf_path)
-        self.string_pdf = ""
         self.chunk_size = 500
         self.overlap_size = 30
 
@@ -14,24 +13,52 @@ class Test():
     def extract_text(self):
 
         for page in self.pdf_file:
-            self.string_pdf += page.get_text()
+            text += page.get_text("text")
+
+            text = text.replace("\n", " ")
+            text = " ".join(text.split())
             
-        return self.string_pdf
+        return text
+    
+    def extract_text_and_token(self):
+        tokens = []
+        initial_point = 0
+        count = 0
+        text = ""
+
+        for page in self.pdf_file:
+            text += page.get_text("text")
+
+            text = text.replace("\n", " ")
+            text = " ".join(text.split())
+
+        for i in text:
+            if i in [" ", "."]:
+                token = text[initial_point:count + 1]
+                initial_point = count + 1
+                tokens.append(token)
+            count += 1
+
+        return [text, tokens]
     
     def split_data_period(self):
-        text = self.extract_text()
+        text = self.extract_text_and_token()[0]
         chunks = []
         initial_point = 0
+        count = 0
 
         for i in text:
             if i == ".":
-                chunk = text[initial_point:len(i)]
+                chunk = text[initial_point:count + 1]
+                initial_point = count + 1
                 chunks.append(chunk)
-                initial_point = len(i) + 1
-        print(chunks)
+
+            count += 1
+
+        return chunks
             
     def split_data(self):
-        text = self.extract_text()
+        text = self.extract_text_and_token()[0]
         chunks = []
         start = 0
         text_length = len(text)
@@ -53,7 +80,4 @@ class Test():
 
 A = Test()
 
-#for i in A.split_data()[0:3]:
-#    print(f"\nChunk: {i}")
-
-A.split_data_period() #Refazer, ainda não funciona
+print(A.extract_text_and_token()[1])

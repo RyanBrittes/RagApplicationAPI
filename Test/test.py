@@ -7,7 +7,7 @@ class Test():
         self.pdf_file = fitz.open(self.pdf_path)
         self.chunk_size = 500
         self.overlap_size = 30
-        self.token_chunk_size = 50
+        self.token_chunk_size = 30
         self.token_overlap_size = 10
 
     #Extrai o texto do PDF, armazena em uma string e retorna o valor
@@ -87,36 +87,30 @@ class Test():
         overlap = ""
         count = 0
         count_aux = 0
-        initial_state = 0
-        
-        #Implementar com While ou For, analisar em qual dos dois é possível implementar o overlap
-        while initial_state < len(tokens):
-            phrase += tokens[count]
-            overlap += tokens[self.token_overlap_size-self.token_chunk_size]
-
-            if count == self.token_chunk_size or count_aux == len(tokens):
-                chunks.append(overlap + " " + phrase)
-                count = 0
-                phrase = ""
-
-            count += 1
 
         for token in tokens:
-            phrase += token
             count += 1
             count_aux += 1
+            phrase += token
 
-            if token == tokens[-self.overlap_size]:
-                overlap += token
-                print(overlap)
+            if count == self.token_chunk_size and chunks == []:
+                chunks.append(phrase)
+                phrase = ""
+                count = 0
 
-            if count == self.token_chunk_size or count_aux == len(tokens):
+            if count >= (self.token_chunk_size - self.token_overlap_size):
+                    overlap += token
+
+            if count == self.token_chunk_size or count_aux == len(tokens) and chunks != []:                        
                 chunks.append(overlap + " " + phrase)
                 count = 0
                 phrase = ""
+                overlap = ""
         
         return chunks
 
 A = Test()
 
-print(A.split_data_per_token()[:2])
+print(A.split_data_per_token())
+#Problema encontrado, o overlap está sincronizado com a phrase, mas eles 
+#precisam estar desincronizados, pois o primeiro chunk não tem overlap.

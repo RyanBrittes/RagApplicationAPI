@@ -8,7 +8,7 @@ class ChunkGenerate():
         self.overlap_dinamic_size = 10
 
     def create_static_chunk(self):
-        text = self.extractor.extract_text()
+        text = self.extractor.extract_pdf_to_text()
         chunks = []
         start = 0
         text_length = len(text)
@@ -29,7 +29,7 @@ class ChunkGenerate():
         return chunks
     
     def create_dinamic_chunk(self):
-        text = self.extractor.extract_text()
+        text = self.extractor.extract_pdf_to_text()
         chunks = []
         overlap = ""
         count = 0
@@ -61,7 +61,7 @@ class ChunkGenerate():
         return chunks
 
     def create_dinamic_chunk_no_overlap(self):
-        text = self.extractor.extract_text()
+        text = self.extractor.extract_pdf_to_text()
         chunks = []
         initial_point = 0
         count = 0

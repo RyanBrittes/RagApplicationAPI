@@ -27,7 +27,7 @@ class VectorStore:
         collection = self.client.get_collection(name="ragApplication")
         
         if collection.count() == 0:
-            documents = self.documents.split_data()
+            documents = self.documents.create_static_chunk()
             
             embeddings = self.embedding.embed_text()
             

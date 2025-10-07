@@ -7,8 +7,6 @@ class Test():
         self.pdf_file = fitz.open(self.pdf_path)
         self.chunk_size = 500
         self.overlap_size = 30
-        self.token_chunk_size = 30
-        self.token_overlap_size = 10
 
     #Extrai o texto do PDF, armazena em uma string e retorna o valor
     def extract_text(self):
@@ -80,37 +78,43 @@ class Test():
         
         return chunks
 
-    def split_data_per_token(self):
-        tokens = self.extract_text_and_token()[1]
-        chunks = []
-        phrase = ""
+    def split_dinamic_data(self):
+        text = self.extract_text()
         overlap = ""
         count = 0
-        count_aux = 0
+        overlap_size = 10
+        index_letter = 0
+        index_start = 0
+        chunks = []
+        index_overlap = 1
 
-        for token in tokens:
-            count += 1
-            count_aux += 1
-            phrase += token
+        while index_letter < len(text):
 
-            if count == self.token_chunk_size and chunks == []:
-                chunks.append(phrase)
-                phrase = ""
-                count = 0
+            if text[index_letter] == ".":
+                chunk = text[index_start:index_letter + 1]
+                index_start = index_letter + 2
+                chunks.append(overlap + chunk)
 
-            if count >= (self.token_chunk_size - self.token_overlap_size):
-                    overlap += token
+                print(f"Chunk: {len(chunk)}\nValor: {chunk}")
 
-            if count == self.token_chunk_size or count_aux == len(tokens) and chunks != []:                        
-                chunks.append(overlap + " " + phrase)
-                count = 0
-                phrase = ""
-                overlap = ""
-        
+                while count < overlap_size:
+                    print(f"Contados: {index_overlap}")
+                    if chunk[-index_overlap] in [" ", ","]:
+                        count += 1
+                    
+                    if index_overlap == len(chunk):
+                        break
+
+                    index_overlap += 1
+
+                overlap = chunk[-index_overlap + 1:]
+                count = 1
+                index_overlap = 0
+
+            index_letter += 1
+
         return chunks
 
 A = Test()
 
-print(A.split_data_per_token())
-#Problema encontrado, o overlap está sincronizado com a phrase, mas eles 
-#precisam estar desincronizados, pois o primeiro chunk não tem overlap.
+print(A.split_dinamic_data())

@@ -2,7 +2,7 @@ import fitz
 
 class ExtractorPDF():
     def __init__(self):
-        self.pdf_path = "files/Texto_Completo_Extraido.pdf"
+        self.pdf_path = "files/Conteudo_Completo.pdf"
         self.pdf_file = fitz.open(self.pdf_path)
     
     def extract_pdf_to_text(self):
@@ -20,13 +20,7 @@ class ExtractorPDF():
         tokens = []
         initial_point = 0
         count = 0
-        text = ""
-
-        for page in self.pdf_file:
-            text += page.get_text("text")
-
-            text = text.replace("\n", " ")
-            text = " ".join(text.split())
+        text = self.extract_pdf_to_text()
 
         for i in text:
             if i in [" ", "."]:

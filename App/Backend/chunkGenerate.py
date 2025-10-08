@@ -1,9 +1,9 @@
-from Backend.extractorPDF import ExtractorPDF
+from extractorPDF import ExtractorPDF
 
 class ChunkGenerate():
     def __init__(self):
         self.extractor = ExtractorPDF()
-        self.chunk_size = 150
+        self.chunk_static_size = 150
         self.overlap_static_size = 30
         self.overlap_dinamic_size = 10
 
@@ -14,16 +14,16 @@ class ChunkGenerate():
         text_length = len(text)
 
         while start < text_length:
-            end = min(start + self.chunk_size, text_length)
+            end = min(start + self.chunk_static_size, text_length)
             chunk = text[start:end]
             chunks.append(chunk)
             
             if end >= text_length:
                 break
                 
-            start += self.chunk_size - self.overlap_size
+            start += self.chunk_static_size - self.overlap_static_size
             
-            if self.overlap_size >= self.chunk_size:
+            if self.overlap_static_size >= self.chunk_static_size:
                 start = end
         
         return chunks

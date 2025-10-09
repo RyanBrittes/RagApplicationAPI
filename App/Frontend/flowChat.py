@@ -83,8 +83,9 @@ class FlowChat():
 
             full_prompt = f"""{persona}
                 {instruction}
-                Responda com base nos seguintes documentos:
-                {context_text}
+                Responda com base nas seguintes informações:
+                {context_text} 
+                Se as informações não tiverem relação com a pergunta a seguir, desconsidere o uso delas.
                 Pergunta: {question}
                 """
             

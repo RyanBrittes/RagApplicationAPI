@@ -3,8 +3,8 @@ from extractorPDF import ExtractorPDF
 class ChunkGenerate():
     def __init__(self):
         self.extractor = ExtractorPDF()
-        self.chunk_static_size = 150
-        self.overlap_static_size = 30
+        self.chunk_static_size = 500
+        self.overlap_static_size = 50
         self.overlap_dinamic_size = 10
 
     def create_static_chunk(self):
@@ -75,4 +75,3 @@ class ChunkGenerate():
             count += 1
 
         return chunks       
-    

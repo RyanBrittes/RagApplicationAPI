@@ -2,7 +2,7 @@ import fitz
 
 class ExtractorPDF():
     def __init__(self):
-        self.pdf_path = "files/Conteudo_Completo.pdf"
+        self.pdf_path = "files/Texto_Completo_Extraido.pdf"
         self.pdf_file = fitz.open(self.pdf_path)
     
     def extract_pdf_to_text(self):

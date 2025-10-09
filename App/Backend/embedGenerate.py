@@ -10,7 +10,7 @@ class EmbedGenerate:
     #Criador de embeddings, cria um dicionário com 4 chaves a partir de um documento dividido em blocos menores (chunks)
     def embed_text(self):
         output = embed.text(
-            texts=self.chunks.create_static_chunk(),
+            texts=self.chunks.create_dinamic_chunk(),
             model='nomic-embed-text-v1.5',
             task_type='search_document'
             #inference_mode='local',

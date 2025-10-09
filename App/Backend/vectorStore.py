@@ -22,7 +22,7 @@ class VectorStore:
     
     #Método que adiciona os embeddings e documentos na coleção do ChromaDB
     def collection_add(self, collection_name):
-        self.collection_verify_create()
+        self.collection_verify_create(collection_name)
 
         collection = self.client.get_collection(name=collection_name)
         
@@ -48,7 +48,7 @@ class VectorStore:
     
     #Método que realiza a consulta na coleção do ChromaDB, trazendo os 3 resultados mais relevantes
     def collection_query(self, query, collection_name):
-         self.collection_add()
+         self.collection_add(collection_name)
 
          collection = self.client.get_collection(name=collection_name)
 
@@ -56,4 +56,5 @@ class VectorStore:
             query_embeddings=query,
             n_results=10
         )
-    
+
+#Coleções criadas: [Chunk_Static_CH500_OV50, Chunk_Dinamic_O10]

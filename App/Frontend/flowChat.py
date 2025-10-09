@@ -19,7 +19,7 @@ class FlowChat():
                                                  temperature=0.1))
         self.recovery = RagGenerate()
         self.instructions = Instructions()
-        self.collection_name = ""
+        self.collection_name = "Chunk_Dinamic_O10"
 
     def get_menu(self):
         while True:

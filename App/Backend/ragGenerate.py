@@ -8,8 +8,8 @@ class RagGenerate():
         self.embed = EmbedGenerate()
     
     #Método que mescla o armazenamento vetorial e o embedder
-    def compair_vector(self, question: str):
+    def compair_vector(self, question: str, collection_name):
         query = self.embed.embed_query(question)
         
-        return self.vector_store.collection_query(query)
+        return self.vector_store.collection_query(query, collection_name)
     

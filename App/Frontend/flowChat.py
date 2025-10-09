@@ -19,6 +19,7 @@ class FlowChat():
                                                  temperature=0.1))
         self.recovery = RagGenerate()
         self.instructions = Instructions()
+        self.collection_name = ""
 
     def get_menu(self):
         while True:
@@ -72,7 +73,7 @@ class FlowChat():
                 self.get_menu()
                 break
 
-            relevant_docs = self.recovery.compair_vector(question)
+            relevant_docs = self.recovery.compair_vector(question, self.collection_name)
 
             context_text = ""
             if 'documents' in relevant_docs and relevant_docs['documents']:

@@ -13,18 +13,18 @@ class VectorStore:
             settings=Settings(allow_reset=True)
             )
 
-    def collection_verify_create(self):
+    def collection_verify_create(self, collection_name):
         verify_collections = self.client.list_collections()
         collection_names = [col.name for col in verify_collections]
-        if "ragApplication" not in collection_names:
-            self.client.create_collection(name="ragApplication")
+        if collection_name not in collection_names:
+            self.client.create_collection(name=collection_name)
             print("Nova coleção criada")            
     
     #Método que adiciona os embeddings e documentos na coleção do ChromaDB
-    def collection_add(self):
+    def collection_add(self, collection_name):
         self.collection_verify_create()
 
-        collection = self.client.get_collection(name="ragApplication")
+        collection = self.client.get_collection(name=collection_name)
         
         if collection.count() == 0:
             documents = self.documents.create_static_chunk()
@@ -47,10 +47,10 @@ class VectorStore:
 
     
     #Método que realiza a consulta na coleção do ChromaDB, trazendo os 3 resultados mais relevantes
-    def collection_query(self, query):
+    def collection_query(self, query, collection_name):
          self.collection_add()
 
-         collection = self.client.get_collection(name="ragApplication")
+         collection = self.client.get_collection(name=collection_name)
 
          return collection.query(
             query_embeddings=query,

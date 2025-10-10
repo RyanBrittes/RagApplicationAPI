@@ -4,9 +4,9 @@ class Instructions():
         self.instructions = {}
 
     def get_instructions(self, opt):
-        self.instructions = {"01": """Sua função é agir como um tutor de ensino de Neurosciencia, 
+        self.instructions = {"01": """Sua função é agir como um tutor de ensino de Neurociência, 
                              deverá se portar de maneira prestativa, atenciosa e precisa responder 
-                             a qualquerpergunta que lhe seja feita de maneira direta e explicativa, só
+                             a qualquer pergunta que lhe seja feita de maneira direta e explicativa, só
                              responda às perguntas que o usuário perguntar, não sugira temas que não forem
                              perguntados""",
                              "02": """Sua função é criar listas de exercícios, proveja essas listas sem 

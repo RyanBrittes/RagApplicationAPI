@@ -28,7 +28,8 @@ class FlowChat():
             opt = input("""\n01 - Iniciar uma conversa com o tutor
                         \n02 - Solicitar a criação de uma lista de exercícios
                         \n03 - Tirar dúvidas sobre um tema específico
-                        \n04 - Sair\n""")
+                        \n04 - Iniciar conversa sem utilizar o RAG
+                        \n05 - Sair\n""")
             match opt:
                 case "01":
                     self.talk_with_tutor("1")
@@ -43,6 +44,10 @@ class FlowChat():
                     break
 
                 case "04":
+                    self.talk_with_tutor("4")
+                    break
+
+                case "05":
                     print("\nAté breve!!")
                     break
                 
@@ -63,8 +68,13 @@ class FlowChat():
         if opt == "3":
             instruction = self.instructions.get_instructions("03")
             print("\n*****Hora de falar com o tutor sobre temas específicos, diga quais são suas dúvidas aqui e se quiser sair é digitar ""sair"" a qualquer momento*****")
-        i = 0
         
+        if opt == "4":
+            instruction = self.instructions.get_instructions("02")
+            print("\n*****Tutor virtual sem a utilização de RAG, se quiser sair é só digitar ""sair"" a qualquer momento*****")
+        
+        i = 0
+
         while True:
             print("\n[User]: ")
             question = input()
@@ -72,26 +82,40 @@ class FlowChat():
             if question == "sair":
                 self.get_menu()
                 break
-
-            relevant_docs = self.recovery.compair_vector(question, self.collection_name)
-
-            context_text = ""
-            if 'documents' in relevant_docs and relevant_docs['documents']:
-                for doc_list in relevant_docs['documents']:
-                    for doc in doc_list:
-                        context_text += f"{doc}\n\n"
-
-            full_prompt = f"""{persona}
-                {instruction}
-                Responda com base nas seguintes informações:
-                {context_text} 
-                Se as informações não tiverem relação com a pergunta a seguir, desconsidere o uso delas.
-                Pergunta: {question}
-                """
             
-            #print(f"\nContexto Extraido: {context_text}")
-            
-            response = self.chat.send_message(full_prompt)
+            if opt != "4":
 
-            print(f"\n[Tutor]:\n{response.text}")
-            i += 2
+                relevant_docs = self.recovery.compair_vector(question, self.collection_name)
+
+                context_text = ""
+                if 'documents' in relevant_docs and relevant_docs['documents']:
+                    for doc_list in relevant_docs['documents']:
+                        for doc in doc_list:
+                            context_text += f"{doc}\n\n"
+
+                full_prompt = f"""{persona}
+                    {instruction}
+                    Responda com base nas seguintes informações:
+                    {context_text} 
+                    Se as informações não tiverem relação com a pergunta a seguir, desconsidere o uso delas.
+                    Pergunta: {question}
+                    """
+                
+                print("***********************************")
+                print(f"\nContexto Extraido: {context_text}")
+                
+                response = self.chat.send_message(full_prompt)
+
+                print(f"\n[Tutor]:\n{response.text}")
+                i += 2
+
+            else:
+                full_prompt = f"""{persona}
+                    {instruction}
+                    Pergunta: {question}
+                    """
+                
+                response = self.chat.send_message(full_prompt)
+
+                print(f"\n[Tutor]:\n{response.text}")
+                i += 2

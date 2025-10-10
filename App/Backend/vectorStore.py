@@ -27,7 +27,7 @@ class VectorStore:
         collection = self.client.get_collection(name=collection_name)
         
         if collection.count() == 0:
-            documents = self.documents.create_static_chunk()
+            documents = self.documents.create_dinamic_chunk_no_overlap()
             
             embeddings = self.embedding.embed_text()
             
@@ -57,4 +57,4 @@ class VectorStore:
             n_results=10
         )
 
-#Coleções criadas: [Chunk_Static_CH500_OV50, Chunk_Dinamic_O10]
+#Coleções criadas: [Chunk_Static_CH500_OV50, Chunk_Dinamic_O10, Chunk_Dinamic_NoOverlap]

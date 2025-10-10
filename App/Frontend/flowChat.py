@@ -19,7 +19,7 @@ class FlowChat():
                                                  temperature=0.1))
         self.recovery = RagGenerate()
         self.instructions = Instructions()
-        self.collection_name = "Chunk_Dinamic_O10"
+        self.collection_name = "Chunk_Dinamic_NoOverlap"
 
     def get_menu(self):
         while True:

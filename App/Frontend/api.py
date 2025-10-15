@@ -1,14 +1,14 @@
 from flask import Flask, jsonify, request
-from flowChat import FlowChat
+from chat import Chat
 
-chat = FlowChat()
+chatFlow = Chat()
 app = Flask(__name__)
 
 @app.route('/input', methods=['POST'])
 def add_message():
     new_message = request.get_json()
-    output = chat.post_message(new_message)
+    output = chatFlow.post_message(new_message)
 
-    return jsonify(output)
+    return output
 
 app.run(port=3000, host='localhost', debug=True)

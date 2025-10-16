@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-from App.Frontend.menuFrontend import MenuFrontend
+from menuFrontend import MenuFrontend
 
 chat = MenuFrontend()
 app = Flask(__name__)
@@ -14,3 +14,4 @@ def add_message():
     return output
 
 app.run(port=3000, host='localhost', debug=True)
+    

@@ -1,9 +1,12 @@
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from Backend.ragGenerate import RagGenerate
 from google import genai
 from google.genai import types
 from dotenv import load_dotenv
-import os
 from instructions import Instructions
-from Backend.ragGenerate import RagGenerate
 
 load_dotenv()
 
@@ -14,7 +17,7 @@ class MenuFrontend():
         self.chat = self.client.chats.create(model="gemma-3-27b-it", config= types.GenerateContentConfig(temperature=0.1))
         self.instructions = Instructions()
         self.recovery = RagGenerate()
-        self.collection_name = "Chunk_Dinamic_NoOverlap"
+        self.collection_name = "Chunk_Static_CH500_OV50"
 
     def post_message_norag(self, question):
         full_prompt = f"""

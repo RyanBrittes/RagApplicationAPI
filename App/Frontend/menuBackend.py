@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-class FlowChat():
+class MenuBackend():
     def __init__(self):
         self.client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
         self.client.chats.create
@@ -119,13 +119,4 @@ class FlowChat():
 
                 print(f"\n[Tutor]:\n{response.text}")
                 i += 2
-
-    def post_message(self, question):
-        full_prompt = f"""
-            {self.instructions.get_instructions("04")}
-            {self.instructions.get_instructions("01")}
-            Pergunta: {question}
-            """
-        return self.chat.send_message(full_prompt)
-    
     

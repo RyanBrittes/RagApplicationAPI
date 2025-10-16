@@ -1,15 +1,15 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-from chat import Chat
+from App.Frontend.menuFrontend import MenuFrontend
 
-chatFlow = Chat()
+chat = MenuFrontend()
 app = Flask(__name__)
 CORS(app)
 
 @app.route('/input', methods=['POST'])
 def add_message():
     new_message = request.get_json()
-    output = chatFlow.post_message(new_message)
+    output = chat.post_message_norag(new_message)
 
     return output
 

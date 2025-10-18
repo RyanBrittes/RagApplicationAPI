@@ -1,8 +1,8 @@
 from flask import Flask, request
 from flask_cors import CORS
-from menuFrontend import MenuFrontend
+from menu import Menu
 
-chat = MenuFrontend()
+chat = Menu()
 app = Flask(__name__)
 CORS(app)
 

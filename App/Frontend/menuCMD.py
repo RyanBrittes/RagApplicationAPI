@@ -3,7 +3,7 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from Backend.ragGenerate import RagGenerate
-from Frontend.instructions import Instructions
+from Backend.instructions import Instructions
 from google import genai
 from google.genai import types
 from dotenv import load_dotenv

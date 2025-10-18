@@ -1,16 +1,13 @@
-import sys
 import os
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-from Backend.ragGenerate import RagGenerate
 from google import genai
 from google.genai import types
 from dotenv import load_dotenv
 from instructions import Instructions
+from ragGenerate import RagGenerate
 
 load_dotenv()
 
-class MenuFrontend():
+class Menu():
     def __init__(self):
         self.client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
         self.client.chats.create

@@ -1,4 +1,4 @@
-from App.Frontend.menuBackend import MenuBackend
+from App.Frontend.menuCMD import MenuBackend
 
 start_menu = MenuBackend()
 

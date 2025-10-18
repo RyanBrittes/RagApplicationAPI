@@ -1,5 +1,5 @@
-from Backend.vectorStore import VectorStore
-from Backend.embedGenerate import EmbedGenerate
+from vectorStore import VectorStore
+from embedGenerate import EmbedGenerate
 
 #Classe utilizada para juntar as funcionalidades do RAG e pronta para ser chamada
 class RagGenerate():

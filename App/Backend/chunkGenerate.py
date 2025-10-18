@@ -1,4 +1,4 @@
-from Backend.extractorPDF import ExtractorPDF
+from extractorPDF import ExtractorPDF
 
 class ChunkGenerate():
     def __init__(self):

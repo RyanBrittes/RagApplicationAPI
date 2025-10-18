@@ -1,7 +1,7 @@
 import chromadb
 from chromadb.config import Settings
-from Backend.embedGenerate import EmbedGenerate
-from Backend.chunkGenerate import ChunkGenerate
+from embedGenerate import EmbedGenerate
+from chunkGenerate import ChunkGenerate
 
 #Classe que utiliza o ChromaDB como armazenamento vetorial
 class VectorStore:

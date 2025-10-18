@@ -11,7 +11,13 @@ class Menu():
     def __init__(self):
         self.client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
         self.client.chats.create
-        self.chat = self.client.chats.create(model="gemma-3-27b-it", config= types.GenerateContentConfig(temperature=0.1))
+        self.chat = self.client.chats.create(model="gemma-3-27b-it", 
+                                             config= types.GenerateContentConfig(
+                                                 temperature=0.1,
+                                                 #top_p=1,
+                                                 #max_output_tokens=200,
+                                                 #top_k=,
+                                                 stop_sequences=[]))
         self.instructions = Instructions()
         self.recovery = RagGenerate()
         self.collection_name = "Chunk_Static_CH500_OV50"

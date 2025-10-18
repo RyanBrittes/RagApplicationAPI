@@ -16,7 +16,10 @@ class MenuBackend():
         self.client.chats.create
         self.chat = self.client.chats.create(model="gemma-3-27b-it", 
                                              config= types.GenerateContentConfig(
-                                                 temperature=0.1))
+                                                 temperature=0.1,
+                                                 top_p=1,
+                                                 max_output_tokens=10,
+                                                 top_k=20))
         self.recovery = RagGenerate()
         self.instructions = Instructions()
         self.collection_name = "Chunk_Dinamic_NoOverlap"
